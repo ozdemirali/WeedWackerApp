@@ -6,12 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TableLayout;
 
 import com.google.android.material.tabs.TabLayout;
 
-import Adapter.MyViewPagerAdapter;
+import com.example.weedwackerapp.Adapter.MyViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;

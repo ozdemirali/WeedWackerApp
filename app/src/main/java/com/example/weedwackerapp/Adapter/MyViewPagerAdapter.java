@@ -1,4 +1,4 @@
-package Adapter;
+package com.example.weedwackerapp.Adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
