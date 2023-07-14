@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 
-import com.example.weedwackerapp.Adapter.MyViewPagerAdapter;
+import com.example.weedwackerapp.adapter.MyViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
@@ -45,19 +45,5 @@ public class MainActivity extends AppCompatActivity {
                 viewPager.setCurrentItem(tab.getPosition());;
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
