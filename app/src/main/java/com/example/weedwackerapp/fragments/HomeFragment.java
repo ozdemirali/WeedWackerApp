@@ -2,7 +2,9 @@ package com.example.weedwackerapp.fragments;
 
 import android.os.Bundle;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.weedwackerapp.R;
 import com.example.weedwackerapp.adapter.MyListAdapter;
+import com.example.weedwackerapp.dialog.InfoAlertDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -107,7 +110,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 System.out.println(i);
+                new InfoAlertDialog().show(getChildFragmentManager(),"asdd");
             }
+
         });
 
         return  view;
