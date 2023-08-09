@@ -21,15 +21,17 @@ public class InfoAlertDialog extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(inflater.inflate(R.layout.dialog_signin, null))
                 // Add action buttons
-                .setPositiveButton("R.string.signin", new DialogInterface.OnClickListener() {
+                .setNeutralButton("Geri", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         // sign in the user ...
                     }
                 })
-                .setNegativeButton("R.string.cancel", new DialogInterface.OnClickListener() {
+
+                .setPositiveButton("Kaydet", new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        //LoginDialogFragment.this.getDialog().cancel();
+                        // sign in the user ...
                     }
                 });
         return builder.create();
