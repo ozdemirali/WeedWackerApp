@@ -19,7 +19,7 @@ public class InfoAlertDialog extends DialogFragment {
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        builder.setView(inflater.inflate(R.layout.dialog_signin, null))
+        builder.setView(inflater.inflate(R.layout.dialog_offer, null))
                 // Add action buttons
                 .setNeutralButton("Geri", new DialogInterface.OnClickListener() {
                     @Override
