@@ -6,44 +6,44 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.weedwackerapp.Contract.CheckFormContract;
+import com.example.weedwackerapp.Presenter.CheckFormPresenter;
 import com.google.android.material.tabs.TabLayout;
 
 import com.example.weedwackerapp.adapter.MyViewPagerAdapter;
 
-public class MainActivity extends AppCompatActivity {
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager;
-    private MyViewPagerAdapter myViewPagerAdapter;
+public class MainActivity extends AppCompatActivity implements CheckFormContract.View {
+
+    private EditText email,password;
+    private Button login;
+    private CheckFormPresenter checkFormPresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        email=findViewById(R.id.editTextEmail);
+        password=findViewById(R.id.editTextPassword);
+        login=findViewById(R.id.buttonLogin);
+        checkFormPresenter =new CheckFormPresenter(this);
 
-        tabLayout= findViewById(R.id.tabLayout);
-        viewPager=findViewById(R.id.viewPager);
-        myViewPagerAdapter=new MyViewPagerAdapter(this,tabLayout.getTabCount());
-        viewPager.setAdapter(myViewPagerAdapter);
-
-
-
-
-        tabLayout.addOnTabSelectedListener(new OnTabSelectedListener() {
+        login.setOnClickListener(new OnClickListener() {
             @Override
-            public void onTabSelected(Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());;
-            }
-
-            @Override
-            public void onTabReselected(Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());;
+            public void onClick(View view) {
+                checkFormPresenter.checkForm(email,password);
             }
         });
+
+    }
+
+    @Override
+    public void showFormOk() {
+        Toast.makeText(this, "Form dolduruldu", Toast.LENGTH_SHORT).show();
     }
 }

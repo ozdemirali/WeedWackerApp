@@ -20,7 +20,7 @@
     <string name="name_tab_add_work">Add Work</string>
     <string name="name_tab_setting">Setting</string>
     <string name="name_offer">Verilen Teklif</string>
-<!---->
+    <!---->
     <string-array name="offer_access_array">
         <item>Hayır</item>
         <item>Evet</item>
