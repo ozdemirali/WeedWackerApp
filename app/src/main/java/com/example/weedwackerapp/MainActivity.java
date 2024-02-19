@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.weedwackerapp.Contract.CheckFormContract;
+import com.example.weedwackerapp.Controller.Service;
 import com.example.weedwackerapp.Presenter.CheckFormPresenter;
 import com.google.android.material.tabs.TabLayout;
 
@@ -36,7 +37,10 @@ public class MainActivity extends AppCompatActivity implements CheckFormContract
         login.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                checkFormPresenter.checkForm(email,password);
+                Service _service=new Service(MainActivity.this);
+                _service.PostLogin();
+
+                //checkFormPresenter.checkForm(email,password);
             }
         });
 
