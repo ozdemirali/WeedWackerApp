@@ -20,5 +20,6 @@ public class CheckFormPresenter implements CheckFormContract.Presenter {
         if(_model.checkModel(email,password)){
             _view.showFormOk();
         }
+
     }
 }
