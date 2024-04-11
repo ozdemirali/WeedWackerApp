@@ -16,12 +16,12 @@ import com.example.weedwackerapp.security.HttpsTrustManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Service {
+public class ServiceLogin {
     private RequestQueue _queue;
     private Context _context;
     private Url _url;
 
-    public Service(Context context){
+    public ServiceLogin(Context context){
         HttpsTrustManager.allowAllSSL();
         _context=context;
         _queue= Volley.newRequestQueue(_context);

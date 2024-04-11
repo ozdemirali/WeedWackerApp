@@ -14,6 +14,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
+    Register register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +23,15 @@ public class RegisterActivity extends AppCompatActivity {
 
         Intent i=getIntent();
         if(i.getExtras()!=null){
-            Register register=(Register)i.getSerializableExtra("data");
-            System.out.println("Register Activity");
-            System.out.println(register.getId());
-            System.out.println(register.getToken());
+            register=(Register)i.getSerializableExtra("data");
+             // System.out.println("Register Activity");
+            //System.out.println(register.getId());
+            //System.out.println(register.getToken());
         }
 
         tabLayout= findViewById(R.id.tabLayout);
         viewPager=findViewById(R.id.viewPager);
-        myViewPagerAdapter=new MyViewPagerAdapter(this,tabLayout.getTabCount());
+        myViewPagerAdapter=new MyViewPagerAdapter(this,tabLayout.getTabCount(),register,this);
         viewPager.setAdapter(myViewPagerAdapter);
 
 

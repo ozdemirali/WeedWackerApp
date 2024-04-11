@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.example.weedwackerapp.Contract.CheckFormContract;
 import com.example.weedwackerapp.Controller.MyBean;
-import com.example.weedwackerapp.Controller.Service;
+import com.example.weedwackerapp.Controller.ServiceLogin;
 import com.example.weedwackerapp.Model.Register;
 import com.example.weedwackerapp.Model.User;
 import com.example.weedwackerapp.Presenter.CheckFormPresenter;
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements CheckFormContract
     private Button login;
     private CheckFormPresenter checkFormPresenter;
     private MyBean bean;
-    private Service service;
+    private ServiceLogin serviceLogin;
 
 
     @Override
@@ -81,11 +81,11 @@ public class MainActivity extends AppCompatActivity implements CheckFormContract
 
 
 
-        service=new Service(MainActivity.this);
+        serviceLogin =new ServiceLogin(MainActivity.this);
         User user=new User();
         user.setEmail(email.getText().toString());
         user.setPassword(password.getText().toString());
-        service.PostLogin(user,bean);
+        serviceLogin.PostLogin(user,bean);
 
 
     }

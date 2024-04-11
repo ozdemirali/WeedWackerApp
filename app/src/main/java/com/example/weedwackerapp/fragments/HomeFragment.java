@@ -1,5 +1,7 @@
 package com.example.weedwackerapp.fragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -12,10 +14,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.weedwackerapp.Controller.MyBean;
+import com.example.weedwackerapp.Controller.ServiceCustomer;
+import com.example.weedwackerapp.MainActivity;
+import com.example.weedwackerapp.Model.Register;
 import com.example.weedwackerapp.R;
+import com.example.weedwackerapp.RegisterActivity;
 import com.example.weedwackerapp.adapter.MyListAdapter;
 import com.example.weedwackerapp.dialog.InfoAlertDialog;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +34,9 @@ import com.example.weedwackerapp.dialog.InfoAlertDialog;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+    private Register _register;
+    private Context _context;
+    private ServiceCustomer _serviceCustomer;
     String[] mainTitle ={
             "Title 1","Title 2",
             "Title 3","Title 4",
@@ -61,9 +75,16 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public HomeFragment() {
+    public HomeFragment(Register register, Context context) {
+        this._register=register;
+        this._context=context;
         // Required empty public constructor
     }
+
+    public HomeFragment() {
+
+    }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -102,9 +123,19 @@ public class HomeFragment extends Fragment {
         //accept Listview From this fragment
         View  view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        System.out.println("Fragment");
+        //System.out.println("--------------------");
+        //System.out.println(_register.getToken());
+       // System.out.println("----------------");
+
+
+        _serviceCustomer=new ServiceCustomer(_context);
+        _serviceCustomer.getCustomerOffer(_register);
+
         MyListAdapter adapter=new MyListAdapter(getContext(), mainTitle, subTitle, imgId);
         ListView list=view.findViewById(R.id.list);
         list.setAdapter(adapter);
+
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
