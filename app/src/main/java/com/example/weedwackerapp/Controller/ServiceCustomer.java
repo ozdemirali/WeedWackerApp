@@ -1,9 +1,13 @@
 package com.example.weedwackerapp.Controller;
 
 import android.content.Context;
+import android.os.Build;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -12,18 +16,24 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.weedwackerapp.Model.CustomerOffer;
 import com.example.weedwackerapp.Model.Register;
 import com.example.weedwackerapp.Model.Url;
 import com.example.weedwackerapp.Model.User;
+import com.example.weedwackerapp.R;
+import com.example.weedwackerapp.adapter.MyListAdapter;
 import com.example.weedwackerapp.security.HttpsTrustManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,22 +54,46 @@ public class ServiceCustomer {
 
 
 
-    public void getCustomerOffer(Register register){
+    public void getCustomerOffer(Context context,Register register,ListView listView,List<CustomerOffer> customerOfferList){
         String url = _url.customerOffer+register.getId();
+        ArrayList<CustomerOffer> customerOffers=new ArrayList<CustomerOffer>();
+
+
+
+        ArrayList<String> mainTitle=new ArrayList<String>();
+        ArrayList<String> subTitle=new ArrayList<String>();
+        ArrayList<Integer>imgId=new ArrayList<Integer>();
         List<String> jsonResponses = new ArrayList<>();
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 try {
-                    JSONArray jsonArray = response.getJSONArray("data");
-                    for(int i = 0; i < jsonArray.length(); i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        //String email = jsonObject.getString("email");
-                        System.out.println(jsonObject.toString());
+
+                    for(int i = 0; i < response.length(); i++){
+                       // System.out.println(response);
+                        JSONObject obj = response.getJSONObject(i);
+                         System.out.println(obj.toString());
                         System.out.println("--------------");
-                        //jsonResponses.add(email);
+                        mainTitle.add(obj.getString("user"));
+                        subTitle.add(obj.getString("price")+ " TL - "+obj.getString("phone"));
+                        imgId.add(R.drawable.icon_home);
+
+                        CustomerOffer customerOffer=new CustomerOffer();
+                        customerOffer.setUser(obj.getString("user"));
+                        customerOffer.setPhone(obj.getString("phone"));
+                        customerOffer.setPrice(Double.valueOf(obj.getString("price")));
+                        customerOffer.setStartTime(convertDate(obj.getString("startTime")));
+                        customerOffer.setEndTime(convertDate(obj.getString("endTime")));
+                        customerOfferList.add(customerOffer);
                     }
+
+                    MyListAdapter adapter=new MyListAdapter(context, mainTitle, subTitle, imgId);
+                    listView.setAdapter(adapter);
+
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -82,27 +116,16 @@ public class ServiceCustomer {
 
     }
 
-    public void test(Register register){
-        JsonObjectRequest jsonObejct = new JsonObjectRequest(Request.Method.GET, _url.customerOffer+register.getId(), null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
 
-                System.out.println("The Response "+response.toString());
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String convertDate(String inputTime){
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        LocalDate date = LocalDate.parse(inputTime, inputFormatter);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String outputString = date.format(outputFormatter);
+        return outputString;
 
-            }
-        }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Bearer "+register.getToken());
-                return params;
-            }
-        };
-        _queue.add(jsonObejct);
     }
+
 
 }

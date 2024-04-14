@@ -2,6 +2,7 @@ package com.example.weedwackerapp.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.session.PlaybackState;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -16,9 +17,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.weedwackerapp.Controller.ListenerCustomerOffer;
 import com.example.weedwackerapp.Controller.MyBean;
 import com.example.weedwackerapp.Controller.ServiceCustomer;
 import com.example.weedwackerapp.MainActivity;
+import com.example.weedwackerapp.Model.CustomerOffer;
 import com.example.weedwackerapp.Model.Register;
 import com.example.weedwackerapp.R;
 import com.example.weedwackerapp.RegisterActivity;
@@ -27,6 +30,8 @@ import com.example.weedwackerapp.dialog.InfoAlertDialog;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,32 +42,8 @@ public class HomeFragment extends Fragment {
     private Register _register;
     private Context _context;
     private ServiceCustomer _serviceCustomer;
-    String[] mainTitle ={
-            "Title 1","Title 2",
-            "Title 3","Title 4",
-            "Title 5",
-            "Title 1","Title 2",
-            "Title 3","Title 4",
-            "Title 5",
-    };
+    private List<CustomerOffer> customerOfferList;
 
-    String[] subTitle ={
-            "Sub Title 1","Sub Title 2",
-            "Sub Title 3","Sub Title 4",
-            "Sub Title 5",
-            "Sub Title 1","Sub Title 2",
-            "Sub Title 3","Sub Title 4",
-            "Sub Title 5",
-    };
-
-    Integer[] imgId={
-            R.drawable.icon_home,R.drawable.icon_add,
-            R.drawable.icon_setting,R.drawable.icon_add,
-            R.drawable.icon_home,
-            R.drawable.icon_home,R.drawable.icon_add,
-            R.drawable.icon_setting,R.drawable.icon_add,
-            R.drawable.icon_home,
-    };
 
 
 
@@ -123,25 +104,29 @@ public class HomeFragment extends Fragment {
         //accept Listview From this fragment
         View  view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        System.out.println("Fragment");
+        //System.out.println("Fragment");
         //System.out.println("--------------------");
         //System.out.println(_register.getToken());
        // System.out.println("----------------");
 
 
-        _serviceCustomer=new ServiceCustomer(_context);
-        _serviceCustomer.getCustomerOffer(_register);
 
-        MyListAdapter adapter=new MyListAdapter(getContext(), mainTitle, subTitle, imgId);
+
+
         ListView list=view.findViewById(R.id.list);
-        list.setAdapter(adapter);
+        customerOfferList=new ArrayList<CustomerOffer>();
+
+
+        _serviceCustomer=new ServiceCustomer(_context);
+        _serviceCustomer.getCustomerOffer(getContext(),_register,list,customerOfferList);
 
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 System.out.println(i);
-                new InfoAlertDialog().show(getChildFragmentManager(),"asdd");
+                System.out.println(customerOfferList.get(i).getUser());
+                new InfoAlertDialog(customerOfferList.get(i)).show(getChildFragmentManager(),"asdd");
             }
 
         });

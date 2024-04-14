@@ -15,15 +15,17 @@ import androidx.fragment.app.Fragment;
 import com.example.weedwackerapp.R;
 import com.example.weedwackerapp.fragments.HomeFragment;
 
+import java.util.List;
+
 public class MyListAdapter extends BaseAdapter {
 
     final Context context;
-    final String[] mainTitle;
-    final String[] subTitle;
-    final Integer[] imgId;
+    final List<String> mainTitle;
+    final List<String> subTitle;
+    final List<Integer> imgId;
     LayoutInflater inflater;
 
-    public MyListAdapter(Context context, String[] mainTitle, String[] subTitle, Integer[] imgId ){
+    public MyListAdapter(Context context, List<String> mainTitle, List<String> subTitle, List<Integer> imgId ){
 
         this.context = context;
         this.mainTitle = mainTitle;
@@ -36,7 +38,7 @@ public class MyListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mainTitle.length;
+        return mainTitle.size();
     }
 
     @Override
@@ -56,9 +58,9 @@ public class MyListAdapter extends BaseAdapter {
         TextView txtview2 = (TextView)  convertView.findViewById(R.id.title);
         ImageView imgview = (ImageView) convertView.findViewById(R.id.icon);
 
-        txtview.setText(mainTitle[position]);
-        txtview2.setText(subTitle[position]);
-        imgview.setImageResource(imgId[position]);
+        txtview.setText(subTitle.get(position));
+        txtview2.setText(mainTitle.get(position));
+        imgview.setImageResource(imgId.get(position));
         return convertView;
     }
 }
