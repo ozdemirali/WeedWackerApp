@@ -2,11 +2,9 @@ package com.example.weedwackerapp.dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -15,12 +13,14 @@ import androidx.fragment.app.DialogFragment;
 import com.example.weedwackerapp.Model.CustomerOffer;
 import com.example.weedwackerapp.R;
 
-public class InfoAlertDialog extends DialogFragment {
-
+public class CustomerOfferDialog extends DialogFragment {
     private CustomerOffer _customerOffer;
-    private TextView text;
+    private TextView txtCompanyName;
+    private TextView txtWorkStartTime;
+    private TextView txtWorkEndTime;
+    private TextView txtWorkPrice;
 
-    public InfoAlertDialog(CustomerOffer customerOffer){
+    public CustomerOfferDialog(CustomerOffer customerOffer){
         this._customerOffer=customerOffer;
     }
 
@@ -30,18 +30,20 @@ public class InfoAlertDialog extends DialogFragment {
 
         // Get the layout inflater
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View view=inflater.inflate(R.layout.dialog_offer,null);
+        View view=inflater.inflate(R.layout.customer_dialog_offer,null);
 
         //A sample is done to change a value of textview.
-//        text=(TextView)view.findViewById(R.id.offerWork);
-//        System.out.println(text.getText().toString());
-//        text.setText("Hello World!");
-//        text.setTextColor(Color.RED);
+        txtCompanyName=(TextView)view.findViewById(R.id.txtCompanyName);
+        txtWorkStartTime=(TextView)view.findViewById(R.id.txtWorkStartTime);
+        txtWorkEndTime=(TextView)view.findViewById(R.id.txtWorkEndTime);
+        txtWorkPrice=(TextView)view.findViewById(R.id.txtWorkPrice);
+        txtCompanyName.setText(_customerOffer.getUser());
+        txtWorkStartTime.setText(_customerOffer.getStartTime());
+        txtWorkEndTime.setText(_customerOffer.getEndTime());
+        txtWorkPrice.setText(String.valueOf(_customerOffer.getPrice())+" TL");
 
 
 
-        System.out.println("Info Alert Dialog");
-        System.out.println(_customerOffer.getUser());
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(view)

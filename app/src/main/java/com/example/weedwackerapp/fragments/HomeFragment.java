@@ -26,6 +26,7 @@ import com.example.weedwackerapp.Model.Register;
 import com.example.weedwackerapp.R;
 import com.example.weedwackerapp.RegisterActivity;
 import com.example.weedwackerapp.adapter.MyListAdapter;
+import com.example.weedwackerapp.dialog.CustomerOfferDialog;
 import com.example.weedwackerapp.dialog.InfoAlertDialog;
 
 import java.beans.PropertyChangeEvent;
@@ -126,7 +127,9 @@ public class HomeFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 System.out.println(i);
                 System.out.println(customerOfferList.get(i).getUser());
-                new InfoAlertDialog(customerOfferList.get(i)).show(getChildFragmentManager(),"asdd");
+//                new InfoAlertDialog(customerOfferList.get(i)).show(getChildFragmentManager(),"asdd");
+                new CustomerOfferDialog(customerOfferList.get(i)).show(getChildFragmentManager(),"Offer");
+
             }
 
         });

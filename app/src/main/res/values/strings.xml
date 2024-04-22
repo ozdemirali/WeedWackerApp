@@ -13,6 +13,18 @@
     <string name="name_password">Şifrenizi Giriniz</string>
     <string name="name_login">Giriş</string>
     <string name="name_logo">Logo</string>
+    <!--Customer dialog variable     -->
+    <string name="customer_offer_dialog_workStartTime">İş Başlama</string>
+    <string name="customer_offer_dialog_workEndTime">İş Bitiş</string>
+    <string name="customer_offer_dialog_offerPrice">Teklifiniz</string>
+    <string name="customer_offer_dialog_confirm">Onay</string>
+    <string-array name="customer_offer_confirm_array">
+        <item>Hayır</item>
+        <item>Evet</item>
+    </string-array>
+    <!---->
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
