@@ -105,14 +105,6 @@ public class HomeFragment extends Fragment {
         //accept Listview From this fragment
         View  view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        //System.out.println("Fragment");
-        //System.out.println("--------------------");
-        //System.out.println(_register.getToken());
-       // System.out.println("----------------");
-
-
-
-
 
         ListView list=view.findViewById(R.id.list);
         customerOfferList=new ArrayList<CustomerOffer>();
@@ -121,13 +113,12 @@ public class HomeFragment extends Fragment {
         _serviceCustomer=new ServiceCustomer(_context);
         _serviceCustomer.getCustomerOffer(getContext(),_register,list,customerOfferList);
 
-
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                System.out.println(i);
-                System.out.println(customerOfferList.get(i).getUser());
-//                new InfoAlertDialog(customerOfferList.get(i)).show(getChildFragmentManager(),"asdd");
+                //System.out.println(i);
+                //System.out.println(customerOfferList.get(i).getUser());
+                //new InfoAlertDialog(customerOfferList.get(i)).show(getChildFragmentManager(),"asdd");
                 new CustomerOfferDialog(customerOfferList.get(i)).show(getChildFragmentManager(),"Offer");
 
             }

@@ -24,6 +24,11 @@
     </string-array>
     <!---->
 
+    <!--Work Description Screen - Fragment    -->
+    <string name="customer_adWork_description">İş Tanımı</string>
+
+    <!---->
+
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -32,6 +37,9 @@
     <string name="name_tab_add_work">Add Work</string>
     <string name="name_tab_setting">Setting</string>
     <string name="name_offer">Verilen Teklif</string>
+    <string name="add_work_name">İşinle ilgili bilgileri yazınız.</string>
+    <string name="add_work_save">Kaydet</string>
+    <string name="add_work_img">Add work Image Icon</string>
     <!---->
     <string-array name="offer_access_array">
         <item>Hayır</item>
