@@ -1,13 +1,27 @@
 package com.example.weedwackerapp.fragments;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.weedwackerapp.R;
 
@@ -18,6 +32,11 @@ import com.example.weedwackerapp.R;
  */
 public class AddWorkFragment extends Fragment {
 
+    private Context _context;
+    private Bitmap bitmap;
+    public static final int RequestPermissionCode=1;
+    ActivityResultLauncher<Intent> activityResultLauncher;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -26,6 +45,11 @@ public class AddWorkFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    public AddWorkFragment(Context context) {
+        this._context=context;
+        // Required empty public constructor
+    }
 
     public AddWorkFragment() {
         // Required empty public constructor
@@ -61,11 +85,96 @@ public class AddWorkFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View view =inflater.inflate(R.layout.fragment_add_work,container,false);
+
+        ImageView imageView=view.findViewById(R.id.imageView);
+        Button save=view.findViewById(R.id.butonAddWork);
+        
+        EnableRuntimePermission();
+
+        //Receiver
+        activityResultLauncher=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                try {
+                    //System.out.println("result Code");
+                    //System.out.println(result.getResultCode());
+                    //System.out.println(result.getData());
+                    if (result.getResultCode() == -1 && result.getData()!=null) {
+                        Bundle bundle= result.getData().getExtras();
+                        bitmap = (Bitmap) bundle.get("data");
+                        imageView.setImageBitmap(bitmap);
+
+
+                    }
+                }catch (Exception e){
+
+                    System.out.println(e.getMessage());
+                }
+
+            }
+        });
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("Tıklnadı");
+
+                try {
+                    Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if(intent.resolveActivity(_context.getPackageManager())!=null){
+                        activityResultLauncher.launch(intent);
+
+                    }else{
+                        activityResultLauncher.launch(intent);
+                        Toast.makeText(_context,"There is no app that support this section",Toast.LENGTH_SHORT).show();
+                    }
+                }
+                 catch (Exception e){
+                     System.out.println(e.getMessage());
+                 }
+
+            }
+        });
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("Tıklandı");
+            }
+        });
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_work, container, false);
+        return view;
     }
 
 
+    // Camera
+    public void EnableRuntimePermission(){
+        if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) _context,
+                Manifest.permission.CAMERA)) {
+            Toast.makeText(_context,"CAMERA permission allows us to Access CAMERA app",Toast.LENGTH_LONG).show();
+        } else {
+            ActivityCompat.requestPermissions((Activity) _context,new String[]{
+                    Manifest.permission.CAMERA}, RequestPermissionCode);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] result) {
+        super.onRequestPermissionsResult(requestCode, permissions, result);
+        switch (requestCode) {
+            case RequestPermissionCode:
+                if (result.length > 0 && result[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(_context, "Permission Granted, Now your application can access CAMERA.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(_context, "Permission Canceled, Now your application cannot access CAMERA.", Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+    }
+    //Camera End
 
 
 }

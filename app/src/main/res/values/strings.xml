@@ -28,6 +28,23 @@
     <string name="customer_adWork_description">İş Tanımı</string>
 
     <!---->
+    <!--Setting Fragment-->
+    <string-array name="city_array">
+        <item>Kocaeli</item>
+        <item>İstanbul</item>
+    </string-array>
+    <string-array name="district_array">
+        <item>İzmit</item>
+        <item>Derince</item>
+    </string-array>
+    <string-array name="neighbourhood_array">
+        <item>Turgut</item>
+        <item>Bulduk</item>
+    </string-array>
+    <string-array name="postCode_array">
+        <item>41200</item>
+        <item>41300</item>
+    </string-array>
 
 
 

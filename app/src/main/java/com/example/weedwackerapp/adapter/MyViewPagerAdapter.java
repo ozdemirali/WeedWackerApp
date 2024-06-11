@@ -31,7 +31,7 @@ public class MyViewPagerAdapter extends FragmentStateAdapter {
             case 0:
                 return  new HomeFragment(_register,_context);
             case  1:
-                return  new AddWorkFragment();
+                return  new AddWorkFragment(_context);
             case  2:
                 return  new SettingFragment();
             default:
