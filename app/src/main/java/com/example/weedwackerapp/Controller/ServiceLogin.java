@@ -56,7 +56,7 @@ public class ServiceLogin {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(_context, "Hastalık kayıt edilemedi", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(_context, "Kullanıcı adı veya Şifresi yanlışs", Toast.LENGTH_SHORT).show();
                     //progressDialog.dismiss();
                 }
             });

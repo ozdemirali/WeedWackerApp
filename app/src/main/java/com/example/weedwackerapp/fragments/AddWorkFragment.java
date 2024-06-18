@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.weedwackerapp.Model.Register;
 import com.example.weedwackerapp.R;
 
 /**
@@ -93,6 +94,8 @@ public class AddWorkFragment extends Fragment {
         
         EnableRuntimePermission();
 
+
+
         //Receiver
         activityResultLauncher=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -142,6 +145,10 @@ public class AddWorkFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 System.out.println("Tıklandı");
+                //Static Test
+                System.out.println("Add Work Static test");
+                System.out.println(Register.getToken());
+                System.out.println(Register.getId());
             }
         });
 

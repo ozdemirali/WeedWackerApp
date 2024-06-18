@@ -40,7 +40,6 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
-    private Register _register;
     private Context _context;
     private ServiceCustomer _serviceCustomer;
     private List<CustomerOffer> customerOfferList;
@@ -57,8 +56,7 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public HomeFragment(Register register, Context context) {
-        this._register=register;
+    public HomeFragment( Context context) {
         this._context=context;
         // Required empty public constructor
     }
@@ -111,7 +109,7 @@ public class HomeFragment extends Fragment {
 
 
         _serviceCustomer=new ServiceCustomer(_context);
-        _serviceCustomer.getCustomerOffer(getContext(),_register,list,customerOfferList);
+        _serviceCustomer.getCustomerOffer(getContext(),list,customerOfferList);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

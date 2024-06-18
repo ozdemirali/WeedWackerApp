@@ -3,10 +3,10 @@ package com.example.weedwackerapp.Model;
 import java.io.Serializable;
 
 public class Register implements Serializable {
-    private String id;
-    private String token;
+    private static String id;
+    private static String token;
 
-    public String getId() {
+    public static String getId() {
         return id;
     }
 
@@ -14,11 +14,11 @@ public class Register implements Serializable {
         this.id = id;
     }
 
-    public String getToken() {
+    public static String getToken() {
         return token;
     }
 
-    public void setToken(String token) {
+    public  void setToken(String token) {
         this.token = token;
     }
 }

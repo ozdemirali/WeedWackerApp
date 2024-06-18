@@ -54,11 +54,9 @@ public class ServiceCustomer {
 
 
 
-    public void getCustomerOffer(Context context,Register register,ListView listView,List<CustomerOffer> customerOfferList){
-        String url = _url.customerOffer+register.getId();
+    public void getCustomerOffer(Context context,ListView listView,List<CustomerOffer> customerOfferList){
+        String url = _url.customerOffer+Register.getId();
         ArrayList<CustomerOffer> customerOffers=new ArrayList<CustomerOffer>();
-
-
 
         ArrayList<String> mainTitle=new ArrayList<String>();
         ArrayList<String> subTitle=new ArrayList<String>();
@@ -74,8 +72,8 @@ public class ServiceCustomer {
                     for(int i = 0; i < response.length(); i++){
                        // System.out.println(response);
                         JSONObject obj = response.getJSONObject(i);
-                         System.out.println(obj.toString());
-                        System.out.println("--------------");
+                         //System.out.println(obj.toString());
+                        //System.out.println("--------------");
                         mainTitle.add(obj.getString("user"));
                         subTitle.add(obj.getString("price")+ " TL - "+obj.getString("phone"));
                         imgId.add(R.drawable.icon_home);
@@ -107,7 +105,7 @@ public class ServiceCustomer {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization", "Bearer " +register.getToken() );
+                headers.put("Authorization", "Bearer " +Register.getToken() );
                 return headers;
             }
         };
