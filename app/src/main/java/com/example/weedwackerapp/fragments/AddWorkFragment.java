@@ -21,10 +21,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.weedwackerapp.Controller.ServiceCustomer;
 import com.example.weedwackerapp.Model.Register;
 import com.example.weedwackerapp.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +40,11 @@ public class AddWorkFragment extends Fragment {
 
     private Context _context;
     private Bitmap bitmap;
+
+    private Spinner spinnerCity;
+    private List<Integer> plateCode;
+    private ServiceCustomer _serviceCustomer;
+
     public static final int RequestPermissionCode=1;
     ActivityResultLauncher<Intent> activityResultLauncher;
 
@@ -91,6 +101,14 @@ public class AddWorkFragment extends Fragment {
 
         ImageView imageView=view.findViewById(R.id.imageView);
         Button save=view.findViewById(R.id.butonAddWork);
+
+        spinnerCity=view.findViewById(R.id.spinnerAddCity);
+        plateCode=new ArrayList<Integer>();
+
+        _serviceCustomer=new ServiceCustomer(_context);
+        _serviceCustomer.getCity(spinnerCity,plateCode);
+
+
         
         EnableRuntimePermission();
 

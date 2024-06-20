@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment {
 
 
         _serviceCustomer=new ServiceCustomer(_context);
-        _serviceCustomer.getCustomerOffer(getContext(),list,customerOfferList);
+        _serviceCustomer.getCustomerOffer(list,customerOfferList);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

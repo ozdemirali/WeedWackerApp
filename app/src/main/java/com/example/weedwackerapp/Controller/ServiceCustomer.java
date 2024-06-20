@@ -54,7 +54,7 @@ public class ServiceCustomer {
 
 
 
-    public void getCustomerOffer(Context context,ListView listView,List<CustomerOffer> customerOfferList){
+    public void getCustomerOffer(ListView listView,List<CustomerOffer> customerOfferList){
         String url = _url.customerOffer+Register.getId();
         ArrayList<CustomerOffer> customerOffers=new ArrayList<CustomerOffer>();
 
@@ -87,8 +87,61 @@ public class ServiceCustomer {
                         customerOfferList.add(customerOffer);
                     }
 
-                    MyListAdapter adapter=new MyListAdapter(context, mainTitle, subTitle, imgId);
+                    MyListAdapter adapter=new MyListAdapter(_context, mainTitle, subTitle, imgId);
                     listView.setAdapter(adapter);
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Bearer " +Register.getToken() );
+                return headers;
+            }
+        };
+
+        _queue.add(jsonObjectRequest);
+
+    }
+
+
+    //This method get all PlateCode and Name of City from Database
+    public void getCity( Spinner spinner,List<Integer> plateCode){
+        String url = _url.getCity;
+       List<String> spinnerArray=new ArrayList<String>();
+
+
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+
+                    for(int i = 0; i < response.length(); i++){
+                        // System.out.println(response);
+                        JSONObject obj = response.getJSONObject(i);
+                        //System.out.println(obj.toString());
+                        System.out.println("--------------");
+                        System.out.println(obj.getString("plateCode"));
+                        spinnerArray.add(obj.getString("name"));
+                        plateCode.add(Integer.parseInt(obj.getString("plateCode")));
+
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(_context, android.R.layout.simple_spinner_item, spinnerArray);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner.setAdapter(adapter);
+
+
 
 
 
