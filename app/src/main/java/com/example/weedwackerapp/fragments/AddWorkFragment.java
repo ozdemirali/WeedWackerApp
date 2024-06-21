@@ -19,6 +19,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -42,7 +43,9 @@ public class AddWorkFragment extends Fragment {
     private Bitmap bitmap;
 
     private Spinner spinnerCity;
+    private Spinner spinnerDistrict;
     private List<Integer> plateCode;
+    private List<Integer> districtId;
     private ServiceCustomer _serviceCustomer;
 
     public static final int RequestPermissionCode=1;
@@ -104,6 +107,10 @@ public class AddWorkFragment extends Fragment {
 
         spinnerCity=view.findViewById(R.id.spinnerAddCity);
         plateCode=new ArrayList<Integer>();
+
+        spinnerDistrict=view.findViewById(R.id.spinnerAddDistrict);
+        districtId=new ArrayList<Integer>();
+
 
         _serviceCustomer=new ServiceCustomer(_context);
         _serviceCustomer.getCity(spinnerCity,plateCode);
@@ -169,6 +176,22 @@ public class AddWorkFragment extends Fragment {
                 System.out.println(Register.getId());
             }
         });
+
+       spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+           @Override
+           public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+               System.out.println("City spinner selected");
+               System.out.println(position);
+               System.out.println(plateCode.get(position));
+               _serviceCustomer.getDistrict(spinnerDistrict,districtId,plateCode.get(position));
+               Toast.makeText(_context, plateCode.get(position).toString(), Toast.LENGTH_SHORT).show();
+           }
+
+           @Override
+           public void onNothingSelected(AdapterView<?> adapterView) {
+
+           }
+       });
 
         // Inflate the layout for this fragment
         return view;

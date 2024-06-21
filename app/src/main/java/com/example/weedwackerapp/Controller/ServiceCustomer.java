@@ -167,6 +167,58 @@ public class ServiceCustomer {
 
     }
 
+    public void getDistrict( Spinner spinner,List<Integer> districtId,Integer plateCode){
+        String url = _url.getDistrict+plateCode;
+        List<String> spinnerArray=new ArrayList<String>();
+
+
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    System.out.println("Döngüden önce");
+                    System.out.println(response.toString());
+                    for(int i = 0; i < response.length(); i++){
+                        // System.out.println(response);
+                        JSONObject obj = response.getJSONObject(i);
+                        System.out.println("service getDistrict");
+                        //System.out.println(obj.toString());
+                        System.out.println(obj.getString("id"));
+                        System.out.println(obj.getString("name"));
+                        System.out.println("--------------");
+                        spinnerArray.add(obj.getString("name"));
+                        districtId.add(Integer.parseInt(obj.getString("id")));
+
+                    }
+
+                       ArrayAdapter<String> adapter = new ArrayAdapter<String>(_context, android.R.layout.simple_spinner_item, spinnerArray);
+                       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                       spinner.setAdapter(adapter);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Bearer " +Register.getToken() );
+                return headers;
+            }
+        };
+
+        _queue.add(jsonObjectRequest);
+
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private String convertDate(String inputTime){
