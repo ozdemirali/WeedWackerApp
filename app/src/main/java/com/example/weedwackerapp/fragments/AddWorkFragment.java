@@ -183,6 +183,8 @@ public class AddWorkFragment extends Fragment {
                System.out.println("City spinner selected");
                System.out.println(position);
                System.out.println(plateCode.get(position));
+
+
                _serviceCustomer.getDistrict(spinnerDistrict,districtId,plateCode.get(position));
                Toast.makeText(_context, plateCode.get(position).toString(), Toast.LENGTH_SHORT).show();
            }

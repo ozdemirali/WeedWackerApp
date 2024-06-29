@@ -45,6 +45,8 @@ public class ServiceLogin {
                             try {
                                 //System.out.println(response);
                                 //System.out.println(response.getString("token"));
+                                ServiceCustomer _serviceCustomer=new ServiceCustomer(_context);
+                                _serviceCustomer.getAddress(user.getEmail());
                                 bean.setMyProperty(response.getString("token"));
 //                                if(response.getString("token").isEmpty()){
 //                                    System.out.println("Boş");

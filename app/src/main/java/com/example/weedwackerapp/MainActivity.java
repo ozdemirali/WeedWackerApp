@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements CheckFormContract
                     data.setId(email.getText().toString());
                     data.setToken(evt.getNewValue().toString());
                     register.putExtra("data",data);
+
                     startActivity(register);
 
                 }

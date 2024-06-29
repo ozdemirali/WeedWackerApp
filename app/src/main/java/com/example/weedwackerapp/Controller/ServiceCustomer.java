@@ -53,7 +53,6 @@ public class ServiceCustomer {
 
 
 
-
     public void getCustomerOffer(ListView listView,List<CustomerOffer> customerOfferList){
         String url = _url.customerOffer+Register.getId();
         ArrayList<CustomerOffer> customerOffers=new ArrayList<CustomerOffer>();
@@ -141,6 +140,16 @@ public class ServiceCustomer {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner.setAdapter(adapter);
 
+                    if(Register.getApply())
+                    {
+                        int spinnerPosition=adapter.getPosition(Register.getCity());
+                        spinner.setSelection(spinnerPosition);
+                    }
+
+
+
+
+
 
 
 
@@ -168,7 +177,7 @@ public class ServiceCustomer {
     }
 
     public void getDistrict( Spinner spinner,List<Integer> districtId,Integer plateCode){
-        String url = _url.getDistrict+plateCode;
+        String url = _url.getDistrictByPlateCode+plateCode;
         List<String> spinnerArray=new ArrayList<String>();
 
 
@@ -184,9 +193,9 @@ public class ServiceCustomer {
                         JSONObject obj = response.getJSONObject(i);
                         System.out.println("service getDistrict");
                         //System.out.println(obj.toString());
-                        System.out.println(obj.getString("id"));
-                        System.out.println(obj.getString("name"));
-                        System.out.println("--------------");
+                        //System.out.println(obj.getString("id"));
+                        //System.out.println(obj.getString("name"));
+                        //System.out.println("--------------");
                         spinnerArray.add(obj.getString("name"));
                         districtId.add(Integer.parseInt(obj.getString("id")));
 
@@ -196,6 +205,16 @@ public class ServiceCustomer {
                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                        spinner.setAdapter(adapter);
 
+                    System.out.println("Get District ");
+                    //System.out.println(Register.getDistrict());
+
+                    if(Register.getApply())
+                    {
+                        System.out.println("Set District worked");
+                        int spinnerPosition = adapter.getPosition(Register.getDistrict());
+                        spinner.setSelection(spinnerPosition);
+                        Register.setApply(false);
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -218,6 +237,55 @@ public class ServiceCustomer {
         _queue.add(jsonObjectRequest);
 
     }
+
+
+    //This method get all PlateCode and Name of City from Database
+    public void getAddress(String userId){
+        String url = _url.getAddressById+userId;
+//        List<String> spinnerArray=new ArrayList<String>();
+
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, new Response.Listener<JSONObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onResponse(JSONObject response) {
+                System.out.println("Get Address");
+                System.out.println(response);
+                try {
+
+                    System.out.println(Register.getApply());
+                    Register.setAddInfo(response.getString("addInfo"));
+                    Register.setCity(response.getString("city"));
+                    Register.setDistrict(response.getString("district"));
+                    Register.setPostCode("postCode");
+                    Register.setPhone(response.getString("phone"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+//
+//                    response.getString(Integer.parseInt("city"));
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Bearer " +Register.getToken() );
+                return headers;
+            }
+        };
+
+        _queue.add(jsonObjectRequest);
+
+    }
+
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
