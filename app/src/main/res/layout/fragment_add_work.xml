@@ -62,7 +62,7 @@
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <EditText
-                android:id="@+id/editTextDescription"
+                android:id="@+id/editTextAddDescription"
                 android:layout_width="0dp"
                 android:layout_height="281dp"
                 android:layout_marginTop="16dp"
@@ -86,7 +86,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
+                app:layout_constraintTop_toBottomOf="@+id/editTextAddDescription"
                 app:layout_constraintVertical_bias="0.9" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

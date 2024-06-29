@@ -1,6 +1,7 @@
 package com.example.weedwackerapp.Controller;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -11,6 +12,7 @@ import androidx.annotation.RequiresApi;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,9 +23,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.weedwackerapp.Model.CustomerOffer;
+import com.example.weedwackerapp.Model.DataPart;
 import com.example.weedwackerapp.Model.Register;
 import com.example.weedwackerapp.Model.Url;
 import com.example.weedwackerapp.Model.User;
+import com.example.weedwackerapp.Model.Work;
 import com.example.weedwackerapp.R;
 import com.example.weedwackerapp.adapter.MyListAdapter;
 import com.example.weedwackerapp.security.HttpsTrustManager;
@@ -32,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -145,15 +150,6 @@ public class ServiceCustomer {
                         int spinnerPosition=adapter.getPosition(Register.getCity());
                         spinner.setSelection(spinnerPosition);
                     }
-
-
-
-
-
-
-
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -299,4 +295,116 @@ public class ServiceCustomer {
     }
 
 
+    //Upload image
+    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    public void uploadBitmap(final Bitmap bitmap, Work work){
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, _url.sendImage,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        try {
+                            JSONObject obj = new JSONObject(new String(response.data));
+                            System.out.println("Upload Method");
+                            System.out.println(obj.getString("fileName"));
+                            Toast.makeText(_context.getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                            //agriculturalDisease.setImageName(obj.getString("fileName"));
+                            //PostProduct(agriculturalDisease);
+                            work.setImage(obj.getString("fileName"));
+                            postWork(work);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println(error.getMessage());
+                        //Toast.makeText(_context.getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                })
+
+
+              {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                return params;
+            }
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                long imagename = System.currentTimeMillis();
+                params.put("pic", new DataPart(imagename + ".png", getFileDataFromDrawable(bitmap)));
+                return params;
+            }
+                  @Override
+                  public Map<String, String> getHeaders() throws AuthFailureError {
+                      HashMap<String, String> headers = new HashMap<String, String>();
+                      headers.put("Authorization", "Bearer " +Register.getToken() );
+                      return headers;
+                  }
+
+        };
+        Volley.newRequestQueue(_context).add(volleyMultipartRequest);
+    }
+
+
+    public void postWork(Work work){
+        JsonObjectRequest _jsonObjectRequest = null;
+        try {
+            JSONObject _jsonObject = new JSONObject();
+            //_jsonObject.put("email","admin");
+            //_jsonObject.put("password","123456");
+            _jsonObject.put("plateDode",work.getPlateCode());
+            _jsonObject.put("districtId",work.getDistrictId());
+            _jsonObject.put("description",work.getDescription());
+            _jsonObject.put("image",work.getImage());
+            _jsonObject.put("userId",Register.getId());
+
+
+            _jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, _url.postWork, _jsonObject,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //System.out.println(response);
+
+                            System.out.println("Post Work");
+                            try {
+                                System.out.println(response.getString("status"));
+                                Toast.makeText(_context, response.getString("status") , Toast.LENGTH_SHORT).show();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println(error.getMessage());
+                    Toast.makeText(_context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    //progressDialog.dismiss();
+                }
+            })
+            {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Authorization", "Bearer " +Register.getToken() );
+                    return headers;
+                }
+            };
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        _queue.add(_jsonObjectRequest);
+    }
 }
+

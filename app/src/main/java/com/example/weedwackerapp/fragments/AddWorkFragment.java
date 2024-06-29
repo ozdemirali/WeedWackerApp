@@ -21,12 +21,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.weedwackerapp.Controller.ServiceCustomer;
 import com.example.weedwackerapp.Model.Register;
+import com.example.weedwackerapp.Model.Work;
 import com.example.weedwackerapp.R;
 
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class AddWorkFragment extends Fragment {
     private List<Integer> plateCode;
     private List<Integer> districtId;
     private ServiceCustomer _serviceCustomer;
+    private Work _work;
 
     public static final int RequestPermissionCode=1;
     ActivityResultLauncher<Intent> activityResultLauncher;
@@ -103,6 +106,7 @@ public class AddWorkFragment extends Fragment {
         View view =inflater.inflate(R.layout.fragment_add_work,container,false);
 
         ImageView imageView=view.findViewById(R.id.imageView);
+        EditText description=view.findViewById(R.id.editTextAddDescription);
         Button save=view.findViewById(R.id.butonAddWork);
 
         spinnerCity=view.findViewById(R.id.spinnerAddCity);
@@ -112,9 +116,12 @@ public class AddWorkFragment extends Fragment {
         districtId=new ArrayList<Integer>();
 
 
+
+
         _serviceCustomer=new ServiceCustomer(_context);
         _serviceCustomer.getCity(spinnerCity,plateCode);
 
+        _work=new Work();
 
         
         EnableRuntimePermission();
@@ -172,8 +179,20 @@ public class AddWorkFragment extends Fragment {
                 System.out.println("Tıklandı");
                 //Static Test
                 System.out.println("Add Work Static test");
-                System.out.println(Register.getToken());
-                System.out.println(Register.getId());
+                //System.out.println(Register.getToken());
+                //System.out.println(Register.getId());
+
+                if(bitmap==null) {
+                    //System.out.println(bitmap);
+                    Toast.makeText(_context, "Resim Çekmelisiniz", Toast.LENGTH_SHORT).show();
+                }else if(description.getText().toString().isEmpty()) {
+                    Toast.makeText(_context, "İşi Tanımlamalısınız", Toast.LENGTH_SHORT).show();
+                }else{
+                    System.out.println("Tamam");
+                    _work.setDescription(description.getText().toString());
+                    _serviceCustomer.uploadBitmap(bitmap,_work);
+                }
+
             }
         });
 
@@ -184,9 +203,22 @@ public class AddWorkFragment extends Fragment {
                System.out.println(position);
                System.out.println(plateCode.get(position));
 
+               _work.setPlateCode(plateCode.get(position));
 
                _serviceCustomer.getDistrict(spinnerDistrict,districtId,plateCode.get(position));
                Toast.makeText(_context, plateCode.get(position).toString(), Toast.LENGTH_SHORT).show();
+           }
+
+           @Override
+           public void onNothingSelected(AdapterView<?> adapterView) {
+
+           }
+       });
+
+       spinnerDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+           @Override
+           public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+               _work.setDistrictId(districtId.get(position));
            }
 
            @Override
